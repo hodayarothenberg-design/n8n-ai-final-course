@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "PASTE_N8N_CHAT_WEBHOOK_URL_HERE";
+const WEBHOOK_URL = "http://localhost:5678/webhook/2b60cb3b-c743-4b0b-8095-7d350f7fc724/chat";
 
 const messagesEl = document.getElementById("messages");
 const formEl = document.getElementById("chat-form");
