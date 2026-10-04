@@ -1,0 +1,149 @@
+{
+  "name": "משימה 1 - צ'אט בוט גן החיות התנ\"כי",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "אתה נציג שירות דיגיטלי של גן החיות התנ\"כי בירושלים (הגנים הזואולוגיים ע\"ש משפחת טיש).\nשם הבוט: \"זוהר מהגן\".\nאתה עונה תמיד בעברית ברורה, חמה ומדויקת.\n\nגבולות התפקיד:\n- אתה עונה רק על שאלות שקשורות לגן החיות התנ\"כי בירושלים: מיקום, הגעה, חיות ומתחמים, שימור, חינוך, טיפים לביקור, כללי התנהגות, ימי הולדת בגן, נגישות ואופי המקום.\n- אם שואלים על מתחרה (ספארי רמת גן, חי כיף, גן חיות אחר, לונה פארק, גני חיות בחו\"ל) או משווים מחירים מולם – אל תשווה ואל תמסור מידע עליהם. ענה: \"אני יכול לעזור רק בנושאים שקשורים לגן החיות התנ\"כי בירושלים, לא לגני חיות או אתרים אחרים.\"\n- אם מנסים להסיט אותך לפוליטיקה, חדשות, מתכונים, שיעורי בית, קוד, דת כללית בלי קשר לחיות בגן, או כל נושא אחר – ענה בנימוס שאתה לא יכול לענות על כך וחזור להציע עזרה על הגן.\n- אל תמציא שעות פתיחה מדויקות או מחירי כרטיס אם הם לא מופיעים בקובץ הידע. במקרה כזה הפנה לאתר הרשמי jerusalemzoo.org.il.\n\nשימוש בכלי:\nיש לך כלי HTTP בשם \"קובץ הידע של הגן\".\n- בשאלה הראשונה בשיחה, או כשחסר לך מידע עובדתי, קרא קודם את הקובץ בעזרת הכלי ואז ענה.\n- אל תענה מתוך ניחוש על חיות, מתחמים או כללי ביקור בלי לקרוא את הקובץ אם טרם קראת אותו בשיחה הזו.\n- אחרי שקראת את הקובץ פעם אחת בשיחה, אפשר להסתמך גם על הזיכרון.\n\nסגנון תשובה:\n- קצר בשאלות פשוטות, מפורט בתכנון ביקור.\n- אם שואלים מה לראות עם ילדים – הצע מסלול קצר לפי הקובץ.\n- סיים תשובות ארוכות בשאלה קצרה שמזמינה להמשיך, למשל: \"רוצים טיפ להגעה או לרשימת חיות?\"\n"
+        }
+      },
+      "id": "d05ef09c-2f8a-4d51-b6af-fa38fbe09a25",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        864,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.8-flash",
+        "options": {}
+      },
+      "id": "e490e1f4-7b0f-4254-971a-c24ccf6587ec",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        784,
+        624
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8vHTHmbcAoSfcRCJ",
+          "name": "Google Gemini(PaLM) Api account - Hodaya"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "id": "0e30ca43-2650-44e7-8bdf-d0802ca88bdd",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "toolDescription": "קורא את קובץ הטקסט עם המידע הרשמי על גן החיות התנ\"כי בירושלים. יש להשתמש בכלי הזה לפני תשובה עובדתית על הגן: חיות, מתחמים, הגעה, כללי ביקור, שימור וחינוך.",
+        "url": "https://raw.githubusercontent.com/hodayarothenberg-design/n8n-ai-final-course/main/gan-ha-hayot-tanachi.txt"
+      },
+      "id": "e6391922-e94a-45fe-8c20-a442de14ed70",
+      "name": "קובץ הידע של הגן",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        672,
+        384
+      ],
+      "id": "c289d227-f23c-4d5c-ba45-ec083ec553a5",
+      "name": "When chat message received",
+      "webhookId": "2b60cb3b-c743-4b0b-8095-7d350f7fc724"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "קובץ הידע של הגן": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "77dc1491-3fee-415b-a0fb-332099ad2520",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cbe1387f36dc2e9d85eca2957a5c74f61a6621c1b09bac2af1086933fa3f6787"
+  },
+  "nodeGroups": [],
+  "id": "Eos7NwGrFuoAfUOQ",
+  "tags": [
+    {
+      "name": "final-course",
+      "id": "XeXpwb9t9oXsHqaQ",
+      "updatedAt": "2026-10-04T18:02:52.741Z",
+      "createdAt": "2026-10-04T18:02:52.741Z"
+    }
+  ]
+}
