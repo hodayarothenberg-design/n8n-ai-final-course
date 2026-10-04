@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>זוהר מהגן | צ'אט גן החיות התנ"כי</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="intro">
+        <p class="eyebrow">משימת סיום קורס AI + n8n</p>
+        <h1>גן החיות התנ"כי בירושלים</h1>
+        <p>
+          שאלו את זוהר על חיות, מסלול למשפחה, איך מגיעים למלחה ומה חשוב לדעת
+          לפני הביקור. הבוט עונה רק על הגן הזה.
+        </p>
+      </section>
+
+      <section class="chat-shell" aria-label="חלון הצ'אט">
+        <header class="chat-header">
+          <div class="avatar" aria-hidden="true">🦁</div>
+          <div>
+            <h2>זוהר מהגן</h2>
+            <p>צ'אט שירות של גן החיות התנ"כי</p>
+          </div>
+        </header>
+
+        <div id="messages" class="messages"></div>
+
+        <form id="chat-form" class="composer">
+          <input
+            id="chat-input"
+            type="text"
+            name="message"
+            placeholder="שאלו על הגן, למשל: מה כדאי לראות עם ילדים?"
+            autocomplete="off"
+            required
+          />
+          <button type="submit">שליחה</button>
+        </form>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
